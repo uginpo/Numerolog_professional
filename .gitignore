@@ -1,1 +1,6 @@
 templates/html_templates
+output/
+logs/
+.venv
+.mypy_cache
+.python-version
