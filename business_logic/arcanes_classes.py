@@ -43,6 +43,26 @@ class Star:
             self.relationship
         )
 
+        self.foot_personality: int = digital_root(
+            client_info.birthday.day, arcanes_number=9)
+        self.foot_spirituality: int = digital_root(
+            client_info.birthday.month, arcanes_number=9)
+        self.foot_money: int = digital_root(
+            client_info.birthday.year, arcanes_number=9)
+
+        self.foot_relationship: int = digital_root(
+            self.personality +
+            self.spirituality +
+            self.money, arcanes_number=9
+        )
+
+        self.foot_health: int = digital_root(
+            self.personality +
+            self.spirituality +
+            self.money +
+            self.relationship, arcanes_number=9
+        )
+
         # Рассчет переменной миссия
         self.mission: int = digital_root(
             self.personality +

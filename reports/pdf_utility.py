@@ -27,38 +27,30 @@ class CustomPDF(FPDF):
         self.image(page_data.image_path, x=0, y=0, w=self.w)
 
         for text_element in page_data.info_positions:
-            # Если font указан, используем его; иначе используем стандартный шрифт
-            if text_element.font:
-                self.set_font(
-                    str(text_element.font["name"]),
-                    text_element.font.get("style", ''),  # type: ignore
-                    int(text_element.font["size"])
-                )
-            else:
-                # Установка стандартного шрифта
-                self.set_font("roboto_regular", "", 12)
-
-            # Если color указан, используем его; иначе используем черный цвет по умолчанию
-            if text_element.color:
-                self.set_text_color(*text_element.color)
-            else:
-                # Установка стандартного черного цвета
-                self.set_text_color(0, 0, 0)
+            # Устанавливаем шрифт
+            self.set_font(
+                str(text_element.font["name"]),  # type: ignore
+                text_element.font.get("style"),  # type: ignore
+                int(text_element.font["size"])  # type: ignore
+            )
+            # Устанавливаем цвет
+            self.set_text_color(*text_element.color)
 
             # Проверяем, что position и text не являются None
             if text_element.position and text_element.text:
                 x, y = text_element.position
-                self.set_xy(x, y)
                 # Рассчитываем ширину текста
                 text_width = self.get_string_width(text_element.text)
+                text_height = self.font_size
 
-            # Выводим текст с динамической шириной ячейки и левым выравниванием
-                self.cell(
-                    w=text_width,  # Ширина ячейки равна ширине текста
-                    h=self.font_size,  # Высота строки равна размеру шрифта
-                    txt=text_element.text,  # type: ignore
-                    align="L"  # Всегда левое выравнивание
-                )
+                self._add_centered_text(
+                    x=x, y=y,
+                    text=text_element.text,
+                    text_width=text_width, text_height=text_height)
+
+            else:
+                raise ValueError(
+                    'Отсутствует текст или координаты для вывода данных')
 
     def create_text_pages(self, page_data: TextPageData):
 
@@ -110,7 +102,7 @@ class CustomPDF(FPDF):
             )
 
             # Уменьшаем интервал между строками
-            line_height = self.font_size * 1.25  # Высота строки равна 1.2 от размера шрифта
+            line_height = self.font_size * 1.5  # Высота строки равна 1.2 от размера шрифта
 
             # Обработка информации внутри раздела
             for info_item in section.info:
@@ -132,3 +124,28 @@ class CustomPDF(FPDF):
         # Прямоугольник со страницей, заполненный цветом
         self.rect(0, 0, self.w, self.h, 'F')
         self.set_y(10)  # Начинаем с верхней части страницы
+
+    def _add_centered_text(self,
+                           x: float, y: float,
+                           text: str,
+                           text_width: int, text_height: int):
+        """
+        Выводит текст точно по центру относительно координаты x.
+
+        Args:
+            x (float): Центральная координата X.
+            y (float): Координата Y, где должен начаться текст.
+            text (str): Текст для вывода.
+            text_width (int): Ширина текста.
+
+        """
+        # Корректируем координату x для центрирования текста
+        centered_x = x - (text_width / 2)
+        centered_y = y - (text_height / 2)
+
+        # Устанавливаем позицию курсора
+        self.set_xy(centered_x, centered_y)
+
+        # Выводим текст
+        self.cell(w=text_width, h=self.font_size, txt=text, align="C")
+        self.set_xy(self.w, self.h)

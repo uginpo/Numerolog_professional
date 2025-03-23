@@ -29,11 +29,11 @@ def get_star_content(star: Star) -> Dict:
         "doom_err": str(star.doom_err),
         "mat_female_line_err": str(star.mat_female_line_err),
         "mission": str(star.mission),
-        "foot_personality": str(star.personality),
-        "foot_spirituality": str(star.spirituality),
-        "foot_money": str(star.money),
-        "foot_relationship": str(star.relationship),
-        "foot_health": str(star.health),
+        "foot_personality": str(star.foot_personality),
+        "foot_spirituality": str(star.foot_spirituality),
+        "foot_money": str(star.foot_money),
+        "foot_relationship": str(star.foot_relationship),
+        "foot_health": str(star.foot_health),
     }
 
 
