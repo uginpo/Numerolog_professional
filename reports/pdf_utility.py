@@ -30,7 +30,7 @@ class CustomPDF(FPDF):
             # Устанавливаем шрифт
             self.set_font(
                 str(text_element.font["name"]),  # type: ignore
-                text_element.font.get("style"),  # type: ignore
+                str(text_element.font.get("style", '')),  # type: ignore
                 int(text_element.font["size"])  # type: ignore
             )
             # Устанавливаем цвет

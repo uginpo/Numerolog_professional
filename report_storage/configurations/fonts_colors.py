@@ -89,6 +89,7 @@ def get_text_fonts_colors() -> Dict:
     background_color = hex_to_rgb('#0C182E')
     # Цвет текста
     text_color = hex_to_rgb('#DDF8F8')
+
     text_fonts_colors = {
         "background_color": background_color,
         "text_color": text_color,
@@ -98,3 +99,31 @@ def get_text_fonts_colors() -> Dict:
     }
 
     return text_fonts_colors
+
+
+def get_triangle_fonts_colors() -> Dict:
+    """Возвращает список шрифтов с цветом для страницы ДТ
+
+    Returns:
+        Dict: словарь шрифтов и цвета
+    """
+
+    scale = SCALE_PX_MM
+    # Размер шрифта Вершины Треугольника
+    size_vertex = 240 * scale
+    # Размер шрифта остальных вершин
+    size_others = 220 * scale
+
+    # Цвет Вершины Треугольника
+    vertex_color = hex_to_rgb('#04070F')
+    # Цвет основных арканов
+    others_color = hex_to_rgb('#E6DFD2')
+
+    triangle_fonts_colors = {
+        "vertex_text": {'font': {'name': 'roboto_bold', 'style': '', 'size': size_vertex},
+                        'color': vertex_color},
+        "others_text": {'font': {'name': 'roboto_bold', 'style': '', 'size': size_others},
+                        'color': others_color},
+    }
+
+    return triangle_fonts_colors

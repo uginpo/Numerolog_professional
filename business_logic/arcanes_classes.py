@@ -20,88 +20,77 @@ class Client:
 
 # Класс для расчета данных звезды
 class Star:
-
     def __init__(self, client_info: Client) -> None:
-        # birthday=datetime.date(1982, 7, 23)
         self.client_info: Client = client_info
 
-        # Рассчет переменных блока Звезды
-        self.personality: int = digital_root(client_info.birthday.day)
-        self.spirituality: int = digital_root(client_info.birthday.month)
-        self.money: int = digital_root(client_info.birthday.year)
+        # Базовые переменные блока Звезды
+        self._personality: int = digital_root(client_info.birthday.day)
+        self._spirituality: int = digital_root(client_info.birthday.month)
+        self._money: int = digital_root(client_info.birthday.year)
 
-        self.relationship: int = digital_root(
-            self.personality +
-            self.spirituality +
-            self.money
-        )
+    @property
+    def personality(self) -> int:
+        return self._personality
 
-        self.health: int = digital_root(
-            self.personality +
-            self.spirituality +
-            self.money +
-            self.relationship
-        )
+    @property
+    def spirituality(self) -> int:
+        return self._spirituality
 
-        self.foot_personality: int = digital_root(
-            client_info.birthday.day, arcanes_number=9)
-        self.foot_spirituality: int = digital_root(
-            client_info.birthday.month, arcanes_number=9)
-        self.foot_money: int = digital_root(
-            client_info.birthday.year, arcanes_number=9)
+    @property
+    def money(self) -> int:
+        return self._money
 
-        self.foot_relationship: int = digital_root(
-            self.personality +
-            self.spirituality +
-            self.money, arcanes_number=9
-        )
+    @property
+    def relationship(self) -> int:
+        return digital_root(self.personality + self.spirituality + self.money)
 
-        self.foot_health: int = digital_root(
-            self.personality +
-            self.spirituality +
-            self.money +
-            self.relationship, arcanes_number=9
-        )
+    @property
+    def health(self) -> int:
+        return digital_root(self.personality + self.spirituality + self.money + self.relationship)
 
-        # Рассчет переменной миссия
-        self.mission: int = digital_root(
-            self.personality +
-            self.spirituality +
-            self.money +
-            self.relationship +
-            self.health
-        )
+    @property
+    def mission(self) -> int:
+        return digital_root(self.personality + self.spirituality + self.money + self.relationship + self.health)
 
-        # Рассчет переменных блока ошибок
-        # Ошибка отца по мужской линии
-        self.pat_male_line_err: int = digital_root(
-            self.personality +
-            self.spirituality
-        )
+    @property
+    def foot_personality(self) -> int:
+        return digital_root(self.client_info.birthday.day, arcanes_number=9)
 
-        # Ошибка мамы по мужской линии
-        self.mat_male_line_err: int = digital_root(
-            self.spirituality +
-            self.money
-        )
+    @property
+    def foot_spirituality(self) -> int:
+        return digital_root(self.client_info.birthday.month, arcanes_number=9)
 
-        # Ошибка отца по женской линии
-        self.pat_female_line_err: int = digital_root(
-            self.money +
-            self.relationship
-        )
+    @property
+    def foot_money(self) -> int:
+        return digital_root(self.client_info.birthday.year, arcanes_number=9)
 
-        # Роковая ошибка
-        self.doom_err: int = digital_root(
-            self.relationship +
-            self.health
-        )
+    @property
+    def foot_relationship(self) -> int:
+        return digital_root(self.personality + self.spirituality + self.money, arcanes_number=9)
 
-        # Ошибка мамы по женской линии
-        self.mat_female_line_err: int = digital_root(
-            self.health +
-            self.personality
-        )
+    @property
+    def foot_health(self) -> int:
+        return digital_root(self.personality + self.spirituality + self.money + self.relationship, arcanes_number=9)
+
+    @property
+    def pat_male_line_err(self) -> int:
+        return digital_root(self.personality + self.spirituality)
+
+    @property
+    def mat_male_line_err(self) -> int:
+        return digital_root(self.spirituality + self.money)
+
+    @property
+    def pat_female_line_err(self) -> int:
+        return digital_root(self.money + self.relationship)
+
+    @property
+    def doom_err(self) -> int:
+        return digital_root(self.relationship + self.health)
+
+    @property
+    def mat_female_line_err(self) -> int:
+        return digital_root(self.health + self.personality)
 
     def __repr__(self):
         return (
@@ -200,52 +189,48 @@ class Pifagor:
         )
 
 
-class Money:
+class Triangle:
     """Класс Money вычисляет и хранит данные для заполнения страницы
     основного и перевернутого треугольника
     """
 
     def __init__(self, star: Star) -> None:
+        self.star = star  # Храним ссылку на объект Star
 
-        self._DAY = star.client_info.birthday.day
-        self._MONTH = star.client_info.birthday.month
-        self._YEAR = star.client_info.birthday.year
-        self._NAME = star.client_info.name
+    # Блок основного треугольника
+        self.vertex = self.star.money
+        self.mat_vertex = self.star.mat_male_line_err
+        self.pat_vertex = self.star.pat_female_line_err
 
-        # Назначение переменных блока основной треугольник
-        self.money: int = star.money
-        self.mat_male_line_err: int = star.mat_male_line_err
-        self.pat_female_line_err: int = star.pat_female_line_err
-
-        # Рассчет переменных перевернутого треугольника
+        # Блок перевернутого треугольника
         # Вершина перевернутого треугольника
-        self.main_vtx: int = digital_root(
-            self.mat_male_line_err +
-            self.pat_female_line_err
+        self.inv_vertex = digital_root(
+            self.mat_vertex +
+            self.pat_vertex
         )
 
         # Материнский род (слева)
-        self.mat_vtx: int = digital_root(
-            self.mat_male_line_err +
-            self.money
+        self.inv_mat_vertex = digital_root(
+            self.mat_vertex +
+            self.vertex
         )
 
         # Отцовский род (справа)
-        self.pat_vtx: int = digital_root(
-            self.pat_female_line_err +
-            self.money
+        self.inv_pat_vertex = digital_root(
+            self.pat_vertex +
+            self.vertex
         )
 
     def __repr__(self):
         return (
-            f"Money для {self._NAME} ({self._DAY}.{self._MONTH}.{self._YEAR}):\n"
+            f"Money для {self.star.client_info.name} ({self.star.client_info.birthday}):\n"
             "---------------------\n"
             "Блок Основной треугольник:\n"
-            f"  money: {self.money}\n"
-            f"  mat_male_line_err: {self.mat_male_line_err:}\n"
-            f"  pat_female_line_err: {self.pat_female_line_err}\n"
+            f"  money: {self.vertex}\n"
+            f"  mat_male_line_err: {self.mat_vertex:}\n"
+            f"  pat_female_line_err: {self.pat_vertex}\n"
             "Блок Перевернутый треугольник:\n"
-            f"  Вершина треугольника: {self.mat_vtx}\n"
-            f"  Материнский род (слева): {self.mat_vtx}\n"
-            f"  Отцовский род (справа): {self.pat_vtx}\n"
+            f"  Вершина треугольника: {self.inv_vertex}\n"
+            f"  Материнский род (слева): {self.inv_mat_vertex}\n"
+            f"  Отцовский род (справа): {self.inv_pat_vertex}\n"
         )

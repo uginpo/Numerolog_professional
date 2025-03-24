@@ -1,5 +1,5 @@
 from typing import Dict
-from business_logic.arcanes_classes import Star, Pifagor, Money
+from business_logic.arcanes_classes import Star, Pifagor, Triangle
 
 
 def get_star_content(star: Star) -> Dict:
@@ -68,7 +68,7 @@ def get_pifagor_content(pifagor: Pifagor) -> Dict:
     }
 
 
-def get_money_content(money: Money) -> Dict:
+def get_money_content(money: Triangle) -> Dict:
     """Возвращает словарь с данными для заполнения
     html шаблона страницы
 
@@ -80,10 +80,10 @@ def get_money_content(money: Money) -> Dict:
     """
 
     return {
-        "number1": money.money,
-        "number2": money.mat_vtx,
-        "number3": money.pat_vtx,
-        "number4": money.mat_male_line_err,
-        "number5": money.main_vtx,
-        "number6": money.pat_female_line_err,
+        "vertex": money.vertex,
+        "mat_vertex": money.mat_vertex,
+        "pat_vertex": money.pat_vertex,
+        "inv_vertex": money.inv_vertex,
+        "inv_mat_vertex": money.inv_mat_vertex,
+        "inv_pat_vertex": money.inv_pat_vertex,
     }

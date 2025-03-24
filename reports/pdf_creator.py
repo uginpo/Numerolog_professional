@@ -28,7 +28,7 @@ def create_star_report(union_data: List) -> bool:
     star_image_content = generate_pdf(
         output_path=output_path,
         page_data=image_page_data,
-        text_data=text_data
+        text_data=""
     )
 
     return True

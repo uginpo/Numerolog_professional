@@ -4,3 +4,5 @@ logs/
 .venv
 .mypy_cache
 .python-version
+__pycache__
+Additiona

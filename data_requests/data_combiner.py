@@ -2,9 +2,9 @@ from report_storage.report_classes import TextElement, ImagePageData
 from report_storage.report_classes import Section, TextPageData
 from typing import Dict, List, Any
 
-from report_storage.configurations.star_position import get_star_position
-from report_storage.configurations.star_fonts_colors import get_image_fonts_colors
-from report_storage.configurations.star_fonts_colors import get_text_fonts_colors
+from report_storage.configurations.positions import get_star_position
+from report_storage.configurations.fonts_colors import get_image_fonts_colors
+from report_storage.configurations.fonts_colors import get_text_fonts_colors
 
 
 def combine_all_data(image_content: Dict, text_content: List) -> List:
