@@ -2,41 +2,6 @@ from typing import Dict
 from business_logic.arcanes_classes import Star, Pifagor, Triangle
 
 
-def get_star_content(star: Star) -> Dict:
-    """Возвращает словарь с данными для заполнения
-    html шаблона страницы
-
-    Args:
-        star (Star): Класс, соответствующий странице
-
-    Returns:
-        Dict: Словарь с контентом
-    """
-
-    # Форматируем дату в строку "ДД.ММ.ГГГГ"
-    formatted_birthdate = star.client_info.birthday.strftime("%d.%m.%Y")
-
-    return {
-        "header_text": f'{star.client_info.name} {formatted_birthdate}',
-        "personality": str(star.personality),
-        "spirituality": str(star.spirituality),
-        "money": str(star.money),
-        "relationship": str(star.relationship),
-        "health": str(star.health),
-        "pat_male_line_err": str(star.pat_male_line_err),
-        "mat_male_line_err": str(star.mat_male_line_err),
-        "pat_female_line_err": str(star.pat_female_line_err),
-        "doom_err": str(star.doom_err),
-        "mat_female_line_err": str(star.mat_female_line_err),
-        "mission": str(star.mission),
-        "foot_personality": str(star.foot_personality),
-        "foot_spirituality": str(star.foot_spirituality),
-        "foot_money": str(star.foot_money),
-        "foot_relationship": str(star.foot_relationship),
-        "foot_health": str(star.foot_health),
-    }
-
-
 def get_pifagor_content(pifagor: Pifagor) -> Dict:
     """Возвращает словарь с данными для заполнения
     html шаблона страницы
@@ -65,25 +30,4 @@ def get_pifagor_content(pifagor: Pifagor) -> Dict:
         "number7": pifagor.number7,
         "number8": pifagor.number8,
         "number9": pifagor.number9,
-    }
-
-
-def get_money_content(money: Triangle) -> Dict:
-    """Возвращает словарь с данными для заполнения
-    html шаблона страницы
-
-    Args:
-        money (Money): Класс, соответствующий странице
-
-    Returns:
-        Dict: Словарь с контентом
-    """
-
-    return {
-        "vertex": money.vertex,
-        "mat_vertex": money.mat_vertex,
-        "pat_vertex": money.pat_vertex,
-        "inv_vertex": money.inv_vertex,
-        "inv_mat_vertex": money.inv_mat_vertex,
-        "inv_pat_vertex": money.inv_pat_vertex,
     }

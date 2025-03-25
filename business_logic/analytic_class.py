@@ -14,10 +14,14 @@ class StarAnalyticDict:
     """Класс для хранения словарей аналитики страницы Звезда"""
 
     def __init__(self, star: Star):
-        self.star = star
-        self.personality_dict = personality_dict
-        self.spirituality_dict = spirituality_dict
-        self.money_dict = money_dict
+        # Служебная информация
+        self._star = star
+        self._personality_dict = personality_dict
+        self._spirituality_dict = spirituality_dict
+        self._money_dict = money_dict
+
+        # Блок
+        self.title = 'Личность'
 
     def get_star_list(self) -> List:
         """

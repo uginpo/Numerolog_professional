@@ -8,7 +8,6 @@ from config import globals
 from business_logic.arcanes_classes import Client, Star
 
 from input_module.clients_info import get_client_info
-from data_requests.data_for_images import get_star_content
 from data_requests.data_for_text import get_star_analytic
 from data_requests.data_combiner import combine_all_data
 from reports.pdf_creator import create_star_report
@@ -45,18 +44,21 @@ def main():
     logger.debug(f'{client_star}')
 
     # 3. Подготовка данных для создания страницы звезда.
-    page_star_content = get_star_content(star=client_star)
+    page_star_content = client_star.get_all_content()
     logger.debug(f'{page_star_content}')
 
     # 4. Подготовка данных для создания страниц аналитики звезды.
-    logger.info("Создание аналитики звезды...")
-    page_star_analytic = get_star_analytic(star=client_star)
-    logger.debug(f'{page_star_analytic}')
-    logger.info("Аналитика звезды создана")
+    # logger.info("Создание аналитики звезды...")
+    # page_star_analytic = get_star_analytic(star=client_star)
+    # logger.debug(f'{page_star_analytic}')
+    # logger.info("Аналитика звезды создана")
 
     # 5. Объединение данных для создания страниц с настройками
     logger.info("Объединение данных для итогового отчета...")
-    union_star_data = combine_all_data(page_star_content, page_star_analytic)
+    union_star_data = combine_all_data(
+        page_star_content, '',
+        page_name='star'
+    )
     logger.debug(f'Объединенные данные {union_star_data}')
     logger.info("Объединение данных завершено")
 

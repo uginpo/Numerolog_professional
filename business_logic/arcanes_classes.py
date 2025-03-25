@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from datetime import date
 from enum import Enum
+from typing import Dict
+
 from utils.math_utils import digital_root, sum_digits
-from loguru import logger
 
 
 # Данные клиента при вводе (имя и дата рождения)
@@ -91,6 +92,31 @@ class Star:
     @property
     def mat_female_line_err(self) -> int:
         return digital_root(self.health + self.personality)
+
+    def get_all_content(self) -> Dict:
+        """Возвращает словарь со всеми данными для страницы звезда
+        """
+        formatted_birthdate = self.client_info.birthday.strftime("%d.%m.%Y")
+
+        return {
+            "header_text": f'{self.client_info.name} {formatted_birthdate}',
+            "personality": str(self.personality),
+            "spirituality": str(self.spirituality),
+            "money": str(self.money),
+            "relationship": str(self.relationship),
+            "health": str(self.health),
+            "mission": str(self.mission),
+            "pat_male_line_err": str(self.pat_male_line_err),
+            "mat_male_line_err": str(self.mat_male_line_err),
+            "pat_female_line_err": str(self.pat_female_line_err),
+            "doom_err": str(self.doom_err),
+            "mat_female_line_err": str(self.mat_female_line_err),
+            "foot_personality": str(self.foot_personality),
+            "foot_spirituality": str(self.foot_spirituality),
+            "foot_money": str(self.foot_money),
+            "foot_relationship": str(self.foot_relationship),
+            "foot_health": str(self.foot_health),
+        }
 
     def __repr__(self):
         return (
@@ -220,6 +246,18 @@ class Triangle:
             self.pat_vertex +
             self.vertex
         )
+
+    def get_all_content(self) -> Dict:
+        """Возвращает словарь со всеми данными для страницы ДТ
+        """
+        return {
+            "vertex": str(self.vertex),
+            "mat_vertex": str(self.mat_vertex),
+            "pat_vertex": str(self.pat_vertex),
+            "inv_vertex": str(self.inv_vertex),
+            "inv_mat_vertex": str(self.inv_mat_vertex),
+            "inv_pat_vertex": str(self.inv_pat_vertex),
+        }
 
     def __repr__(self):
         return (

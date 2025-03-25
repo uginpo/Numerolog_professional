@@ -2,12 +2,13 @@ from report_storage.report_classes import TextElement, ImagePageData
 from report_storage.report_classes import Section, TextPageData
 from typing import Dict, List, Any
 
-from report_storage.configurations.positions import get_star_position
-from report_storage.configurations.fonts_colors import get_image_fonts_colors
-from report_storage.configurations.fonts_colors import get_text_fonts_colors
+from loguru import logger
+
+from report_storage.configurations.position_class import StarPositions, TrianglePositions
+from report_storage.configurations.font_colors_class import FontsColorsConfig
 
 
-def combine_all_data(image_content: Dict, text_content: List) -> List:
+def combine_all_data(image_content: Dict, text_content: List = [''], page_name: str = 'star') -> List:
     """Объединяет все данные для создания полного 
     pdf отчета по странице Star
 
@@ -20,28 +21,39 @@ def combine_all_data(image_content: Dict, text_content: List) -> List:
         создания pdf отчета
     """
     # Объединение данных для страницы-изображения star
-    union_data: List = combine_star_image_data(image_content)
-    union_text: TextPageData = combine_star_text_data(text_content)
+    union_data: List = combine_image_data(
+        image_content=image_content,
+        page_name=page_name
+    )
+    # union_text: TextPageData = combine_star_text_data(text_content)
+    union_text: TextPageData = text_content
 
     return [union_data, union_text]
 
 
-def combine_star_image_data(image_content: Dict) -> List:
+def combine_image_data(image_content: Dict, page_name: str) -> List:
     """Объединяет данные арканов с координатами и шрифтами
-
     Args:
         image_content (Dict): данные арканов
-
     Returns:
         List: Объединенные данные
     """
+    fonts_colors = FontsColorsConfig()
 
-    # Получаем координаты
-    positions = get_star_position().values()
+    match page_name:
+        case 'star':
+            # Получаем координаты
+            data_positions = StarPositions()
+            # Получаем шрифты
+            fonts_list = fonts_colors.get_star_attributes().values()
 
-    # Получаем шрифты
-    fonts_list: List | Any = get_image_fonts_colors().values()
+        case 'money':
+            # Получаем координаты
+            data_positions = TrianglePositions()
+            # Получаем шрифты
+            fonts_list = fonts_colors.get_triangle_attributes().values()
 
+    positions = data_positions.get_all_positions().values()
     # Получаем значения арканов
     arcanes = image_content.values()
 
@@ -52,7 +64,7 @@ def combine_star_image_data(image_content: Dict) -> List:
     return combined_list
 
 
-def combine_star_text_data(text_content: List) -> TextPageData:
+def combine_text_data(text_content: List) -> TextPageData:
     """Объединяет данные аналитики с координатами и шрифтами
 
     Args:

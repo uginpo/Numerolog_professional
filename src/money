@@ -8,10 +8,9 @@ from config import globals
 from business_logic.arcanes_classes import Client, Star, Triangle
 
 from input_module.clients_info import get_client_info
-from data_requests.data_for_images import get_money_content
 from data_requests.data_for_text import get_star_analytic
 from data_requests.data_combiner import combine_all_data
-from reports.pdf_creator import create_star_report
+from reports.pdf_creator import create_star_report, create_money_report
 
 
 # Основная функция программы
@@ -39,28 +38,31 @@ def main():
     # 2. Создание арканов для ТД по данным клиента.
     logger.info("Создание контента страницы ТД")
     star = Star(client_info=client_info)
-    client_money = Trianle(star)
+    client_money = Triangle(star)
     logger.debug(f'Класс money {client_money}')
 
     # 3. Подготовка данных для создания страницы ТД.
-    page_money_content = get_money_content(money=client_money)
+    page_money_content = client_money.get_all_content()
     logger.debug(f'{page_money_content}')
 
     # 4. Подготовка данных для создания страниц ТД.
-    logger.info("Создание аналитики ТД...")
-    page_money_analytic = get_money_analytic(money=client_money)
-    logger.debug(f'{page_money_analytic}')
-    logger.info("Аналитика звезды создана")
+    # logger.info("Создание аналитики ТД...")
+    # page_money_analytic = get_money_analytic(money=client_money)
+    # logger.debug(f'{page_money_analytic}')
+    # logger.info("Аналитика звезды создана")
 
     # 5. Объединение данных для создания страниц с настройками
-    # logger.info("Объединение данных для итогового отчета...")
-    # union_star_data = combine_all_data(page_star_content, page_star_analytic)
-    # logger.debug(f'Объединенные данные {union_star_data}')
-    # logger.info("Объединение данных завершено")
+    logger.info("Объединение данных для итогового отчета...")
+    union_money_data = combine_all_data(
+        page_money_content, '',
+        page_name='money'
+    )
+    logger.debug(f'Объединенные данные {union_money_data}')
+    logger.info("Объединение данных завершено")
 
     # 6. Создание отчета в виде pdf файла.
-    # result = create_star_report(union_star_data)
-    # logger.info("Завершение создания страницы star")
+    result = create_money_report(union_money_data)
+    logger.info("Завершение создания страницы star")
     # Завершение создания страницы star
 
     # Завершение работы программы
