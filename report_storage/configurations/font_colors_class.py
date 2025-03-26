@@ -79,6 +79,14 @@ class FontsColorsConfig:
 
     # Настройки для страницы аналитики
     @property
+    def background_color(self) -> Dict:
+        """Настройки для заголовков аналитики"""
+        return {
+            "font": self._create_font_settings("roboto_regular", 240),
+            "color": self._create_color_settings("#DDF8F8")
+        }
+
+    @property
     def title_text(self) -> Dict:
         """Настройки для заголовков аналитики"""
         return {

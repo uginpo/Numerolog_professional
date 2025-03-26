@@ -16,47 +16,36 @@ class StarAnalyticDict:
     def __init__(self, star: Star):
         # Служебная информация
         self._star = star
-        self._personality_dict = personality_dict
-        self._spirituality_dict = spirituality_dict
-        self._money_dict = money_dict
+
+        self._personality_dict = personality_dict.get(
+            self._star.personality, None
+        )
+        self._spirituality_dict = spirituality_dict.get(
+            self._star.spirituality, None
+        )
+        self._money_dict = money_dict.get(
+            self._star.money, None)
+
+        if not self._is_dict_correct():
+            raise ValueError('В словаре(словарях) недостаточно данных')
 
         # Блок
         self.title = 'Личность'
 
-    def get_star_list(self) -> List:
-        """
-        Возвращает список словарей для создания страницы
-        Returns:
-            List: Список словарей
-        """
-        # Проверка на полноту информации словарей БД
-        # В каждом словаре должна быть информация по своему аркану
-        self.pers_dict = self.personality_dict.get(
-            self.star.personality, None)
-
-        self.spir_dict = self.spirituality_dict.get(
-            self.star.spirituality, None)
-
-        self.mon_dict = self.money_dict.get(
-            self.star.money, None)
-
-        if not self.pers_dict:
+    def _is_dict_correct(self) -> bool:
+        if not self._personality_dict:
             logger.error(
-                f'В словаре personality_dict отсутствует информация по ключу {self.star.personality}')
+                f'В словаре personality_dict отсутствует информация по ключу {self._star.personality}')
 
-        if not self.spir_dict:
+        if not self._spirituality_dict:
             logger.error(
-                f'В словаре spirituality_dict отсутствует информация по ключу {self.star.spirituality}')
+                f'В словаре spirituality_dict отсутствует информация по ключу {self._star.spirituality}')
 
-        if not self.mon_dict:
+        if not self._money_dict:
             logger.error(
-                f'В словаре money_dict отсутствует информация по ключу {self.star.money}')
+                f'В словаре money_dict отсутствует информация по ключу {self._star.money}')
 
-        if any([self.pers_dict, self.spir_dict, self.mon_dict]):
-            raise ValueError('В словаре(словарях) недостаточно данных')
-
-        # Возврат только необходимой информации для заполнения страницы аналитики
-        return [self.pers_dict, self.spir_dict, self.mon_dict]
+        return all([self._personality_dict, self._spirituality_dict, self._money_dict])
 
 
 class MoneyAnalyticDict:

@@ -18,7 +18,7 @@ def create_star_report(union_data: List) -> bool:
     Returns:
         bool: успешность создания отчета
     """
-    output_path = str(OUTPUT_PATH/f'{globals.CLIENT_ID}_star.pdf')
+    output_path = str(OUTPUT_PATH/f'{globals.CLIENT_FULL_NAME}_star.pdf')
     image = str(TEMPLATES_PATH/STAR_IMG)
 
     image_data, text_data = union_data
@@ -43,7 +43,7 @@ def create_money_report(union_data: List) -> bool:
     Returns:
         bool: успешность создания отчета
     """
-    output_path = str(OUTPUT_PATH/f'{globals.CLIENT_ID}_money.pdf')
+    output_path = str(OUTPUT_PATH/f'{globals.CLIENT_FULL_NAME}_money.pdf')
     image = str(TEMPLATES_PATH/MONEY_IMG)
 
     image_data, text_data = union_data

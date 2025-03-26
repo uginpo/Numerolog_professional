@@ -3,7 +3,6 @@ from loguru import logger
 from pathlib import Path
 import os
 
-from config import globals
 
 from business_logic.arcanes_classes import Client, Star
 
@@ -32,7 +31,6 @@ def main():
     # 1. Получение данных клиента
     logger.info("Получение данных клиента...")
     client_info = get_client_info()
-    globals.CLIENT_ID = f'{client_info.name} {client_info.birthday.strftime("%d.%m.%Y")}'
     logger.debug(f'Имя и ДР клиента {client_info}')
 
     # Создание контекста для шаблонов страниц

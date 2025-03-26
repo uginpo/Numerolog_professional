@@ -43,7 +43,7 @@ def combine_image_data(image_content: Dict, page_name: str) -> List:
     match page_name:
         case 'star':
             # Получаем координаты
-            data_positions = StarPositions()
+            data_positions: StarPositions | TrianglePositions = StarPositions()
             # Получаем шрифты
             fonts_list = fonts_colors.get_star_attributes().values()
 
@@ -75,7 +75,9 @@ def combine_text_data(text_content: List) -> TextPageData:
     """
 
     # Получаем шрифты
-    fonts_dict: Dict | Any = get_text_fonts_colors()
+    fonts_colors = FontsColorsConfig()
+    fonts_list = fonts_colors.get_text_attributes()
+
     # цвета
     background_color: tuple | Any = fonts_dict.get('background_color')
     text_color: tuple | Any = fonts_dict.get('text_color')
