@@ -2,6 +2,7 @@ from typing import Dict, List
 
 from loguru import logger
 from business_logic.arcanes_classes import Star, Triangle
+from report_storage.report_classes import Section
 
 from text_storage.personality_dict import personality_dict
 from text_storage.spirituality_dict import spirituality_dict
@@ -10,7 +11,7 @@ from text_storage.processing_dict import processing_dict
 from text_storage.talents_dict import talents_dict
 
 
-class StarAnalyticDict:
+class StarAnalyticInfo:
     """Класс для хранения словарей аналитики страницы Звезда"""
 
     def __init__(self, star: Star):
@@ -29,8 +30,68 @@ class StarAnalyticDict:
         if not self._is_dict_correct():
             raise ValueError('В словаре(словарях) недостаточно данных')
 
-        # Блок
-        self.title = 'Личность'
+        # Блок контента страницы аналитики
+        self._personality_analytic = [
+            Section(
+                title='Личность',
+                subtitle='Положительные черты',
+                info=self._personality_dict.get('personality_positive')
+            ),
+            Section(
+                title='Личность',
+                subtitle='Отрицательные черты',
+                info=self._personality_dict.get('personality_negative')
+            ),
+            Section(
+                title='Личность',
+                subtitle='Рекомендации',
+                info=self._personality_dict.get('personality_recommendations')
+            )
+        ]
+
+        self._spirituality_analytic = [
+            Section(
+                title='Духовность',
+                subtitle='Программа рода:',
+                info=self._spirituality_dict  # type: ignore
+            )
+        ]
+
+        self._money_analytic = [
+            Section(
+                title='Деньги',
+                subtitle='Кем Вы были в прошлой жизни?',
+                info=self._money_dict.get('main_number')  # type: ignore
+            ),
+            Section(
+                title='Деньги',
+                subtitle='Профессии, которые Вам подходят:',
+                info=self._money_dict.get('professions')  # type: ignore
+            ),
+            Section(
+                title='Деньги',
+                subtitle='Ваша энергия:',
+                info=self._money_dict.get('energy')  # type: ignore
+            ),
+            Section(
+                title='Деньги',
+                subtitle='Ваши блоки и ограничения:',
+                info=self._money_dict.get('restrictions')  # type: ignore
+            ),
+            Section(
+                title='Деньги',
+                subtitle='Траты, увеличивающие доход:',
+                info=self._money_dict.get('costs')  # type: ignore
+            ),
+        ]
+
+    def get_all_sections(self) -> List[Section]:
+        """Возвращает контент для страницы аналитики звезды
+        """
+        all_sections = self._personality_analytic
+        all_sections.extend(self._spirituality_analytic)
+        all_sections.extend(self._money_analytic)
+        return all_sections
 
     def _is_dict_correct(self) -> bool:
         if not self._personality_dict:
@@ -48,7 +109,7 @@ class StarAnalyticDict:
         return all([self._personality_dict, self._spirituality_dict, self._money_dict])
 
 
-class MoneyAnalyticDict:
+class MoneyAnalyticInfo:
     """Класс для хранения словарей аналитики страницы ДТ
     """
 

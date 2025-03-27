@@ -79,36 +79,29 @@ class FontsColorsConfig:
 
     # Настройки для страницы аналитики
     @property
-    def background_color(self) -> Dict:
+    def background_color(self) -> Tuple[int, int, int]:
         """Настройки для заголовков аналитики"""
-        return {
-            "font": self._create_font_settings("roboto_regular", 240),
-            "color": self._create_color_settings("#DDF8F8")
-        }
+        return self._create_color_settings("#0C182E")
+
+    @property
+    def text_color(self) -> Tuple[int, int, int]:
+        """Настройки для заголовков аналитики"""
+        return self._create_color_settings("#DDF8F8")
 
     @property
     def title_text(self) -> Dict:
         """Настройки для заголовков аналитики"""
-        return {
-            "font": self._create_font_settings("roboto_regular", 240),
-            "color": self._create_color_settings("#DDF8F8")
-        }
+        return self._create_font_settings("roboto_regular", 240)
 
     @property
     def subtitle_text(self) -> Dict:
         """Настройки для подзаголовков аналитики"""
-        return {
-            "font": self._create_font_settings("roboto_regular", 240 / 1.61),
-            "color": self._create_color_settings("#DDF8F8")
-        }
+        return self._create_font_settings("roboto_regular", 240 / 1.61)
 
     @property
     def plain_text(self) -> Dict:
         """Настройки для обычного текста аналитики"""
-        return {
-            "font": self._create_font_settings("roboto_light", (240 / 1.61 / 1.2)),
-            "color": self._create_color_settings("#DDF8F8")
-        }
+        return self._create_font_settings("roboto_light", (240 / 1.61 / 1.2))
 
     def get_star_attributes(self) -> Dict:
         """Возвращает все атрибуты звезды"""
@@ -148,6 +141,8 @@ class FontsColorsConfig:
     def get_text_attributes(self) -> Dict:
         """Возвращает все атрибуты Треугольника"""
         attributes = {
+            "background_color": self.background_color,
+            "text_color": self.text_color,
             "title_text": self.title_text,
             "subtitle_text": self.subtitle_text,
             "plain_text": self.plain_text,

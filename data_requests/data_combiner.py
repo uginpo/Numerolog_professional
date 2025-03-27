@@ -1,6 +1,6 @@
 from report_storage.report_classes import TextElement, ImagePageData
 from report_storage.report_classes import Section, TextPageData
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Tuple
 
 from loguru import logger
 
@@ -8,7 +8,7 @@ from report_storage.configurations.position_class import StarPositions, Triangle
 from report_storage.configurations.font_colors_class import FontsColorsConfig
 
 
-def combine_all_data(image_content: Dict, text_content: List = [''], page_name: str = 'star') -> List:
+def combine_all_data(image_content: Dict, text_content: List, page_name: str) -> List:
     """Объединяет все данные для создания полного 
     pdf отчета по странице Star
 
@@ -26,7 +26,9 @@ def combine_all_data(image_content: Dict, text_content: List = [''], page_name: 
         page_name=page_name
     )
     # union_text: TextPageData = combine_star_text_data(text_content)
-    union_text: TextPageData = text_content
+    union_text: TextPageData = combine_text_data(
+        text_content,
+        page_name=page_name)
 
     return [union_data, union_text]
 
@@ -64,43 +66,42 @@ def combine_image_data(image_content: Dict, page_name: str) -> List:
     return combined_list
 
 
-def combine_text_data(text_content: List) -> TextPageData:
+def combine_text_data(text_content: List, page_name: str) -> TextPageData:
     """Объединяет данные аналитики с координатами и шрифтами
 
     Args:
         text_content (List[Dict]): список словарей с аналитикой
-
+        page_name (str): название страницы
     Returns:
         List: Объединенные данные
     """
 
     # Получаем шрифты
     fonts_colors = FontsColorsConfig()
-    fonts_list = fonts_colors.get_text_attributes()
+    fonts_dict: Dict = fonts_colors.get_text_attributes()
 
     # цвета
-    background_color: tuple | Any = fonts_dict.get('background_color')
-    text_color: tuple | Any = fonts_dict.get('text_color')
+    background_color: Tuple = fonts_dict.get(
+        'background_color')  # type: ignore
+
+    text_color: Tuple = fonts_dict.get('text_color')  # type: ignore
+
     # шрифты
     title_font: Dict | Any = fonts_dict.get('title_text')
     subtitle_font = fonts_dict.get('subtitle_text')
     info_font = fonts_dict.get('plain_text')
 
-    sections: List = []
+    match page_name:
+        case 'star':
+            # Дополняем данные в Section информацией о шрифтах
+            for item in text_content:
+                item.subtitle_font = subtitle_font
+                item.title_font = title_font
+                item.info_font = info_font
 
-    # перебор всех словарей Личность, Духовность, Деньги
-    for curr_dict in text_content:
-
-        section = Section(
-            title=curr_dict.get('title'),
-            subtitle=curr_dict.get('subtitle'),
-            info=curr_dict.get('info'),
-            title_font=title_font,
-            subtitle_font=subtitle_font,
-            info_font=info_font
-        )
-        sections.append(section)
-
-    union_text = TextPageData(background_color, text_color, sections=sections)
+    union_text = TextPageData(
+        background_color=background_color,
+        text_color=text_color,
+        sections=text_content)
 
     return union_text

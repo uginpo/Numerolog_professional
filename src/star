@@ -5,9 +5,9 @@ import os
 
 
 from business_logic.arcanes_classes import Client, Star
+from business_logic.analytic_class import StarAnalyticInfo
 
 from input_module.clients_info import get_client_info
-from data_requests.data_for_text import get_star_analytic
 from data_requests.data_combiner import combine_all_data
 from reports.pdf_creator import create_star_report
 
@@ -46,15 +46,14 @@ def main():
     logger.debug(f'{page_star_content}')
 
     # 4. Подготовка данных для создания страниц аналитики звезды.
-    # logger.info("Создание аналитики звезды...")
-    # page_star_analytic = get_star_analytic(star=client_star)
-    # logger.debug(f'{page_star_analytic}')
-    # logger.info("Аналитика звезды создана")
+    page_star_analytic = StarAnalyticInfo(star=client_star).get_all_sections()
+
+    logger.debug(f'{page_star_analytic}')
 
     # 5. Объединение данных для создания страниц с настройками
     logger.info("Объединение данных для итогового отчета...")
     union_star_data = combine_all_data(
-        page_star_content, '',
+        page_star_content, page_star_analytic,
         page_name='star'
     )
     logger.debug(f'Объединенные данные {union_star_data}')
@@ -71,6 +70,8 @@ def main():
 
 # Точка входа в программу
 if __name__ == "__main__":
+
     from utils.log_utils import configure_logger
+
     configure_logger()
     main()
