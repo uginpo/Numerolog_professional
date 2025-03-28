@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 from loguru import logger
 from business_logic.arcanes_classes import Star, Triangle
@@ -114,49 +114,168 @@ class MoneyAnalyticInfo:
     """
 
     def __init__(self, money: Triangle) -> None:
-        self.money = money
-        self.processing_dict = processing_dict
-        self.talents_dict = talents_dict
-        self.money_dict = money_dict
+        self._money = money
 
-    def get_money_list(self) -> List:
+        self._money_dict = money_dict.get(
+            self._money.vertex
+        )
+        self._processing_dict = processing_dict.get(
+            self._money.inv_vertex, None
+        )
+        self._talents_mat = talents_dict.get(
+            self._money.mat_vertex, None
+        )
+        self._talents_pat = talents_dict.get(
+            self._money.pat_vertex, None
+        )
+        self._talents_inv_mat = talents_dict.get(
+            self._money.inv_mat_vertex, None
+        )
+        self._talents_inv_pat = talents_dict.get(
+            self._money.inv_pat_vertex, None
+        )
+
+        if not self._is_dict_correct():
+            raise ValueError('В словаре(словарях) недостаточно данных')
+
+    # Блок контента страницы аналитики
+    @property
+    def money_analytic(self):
+        return [
+            Section(
+                title='Деньги',
+                subtitle='Кем Вы были в прошлой жизни?',
+                info=self._money_dict.get('main_number')  # type: ignore
+            ),
+            Section(
+                title='Деньги',
+                subtitle='Профессии, которые Вам подходят:',
+                info=self._money_dict.get('professions')  # type: ignore
+            ),
+            Section(
+                title='Деньги',
+                subtitle='Ваша энергия:',
+                info=self._money_dict.get('energy')  # type: ignore
+            ),
+            Section(
+                title='Деньги',
+                subtitle='Ваши блоки и ограничения:',
+                info=self._money_dict.get('restrictions')  # type: ignore
+            ),
+            Section(
+                title='Деньги',
+                subtitle='Траты, увеличивающие доход:',
+                info=self._money_dict.get('costs')  # type: ignore
+            ),
+        ]
+
+    @property
+    def processing_analytic(self):
+        return [
+            Section(
+                title='Проработка',
+                subtitle='Важные качества',
+                info=self._processing_dict.get('number')  # type: ignore
+            ),
+            Section(
+                title='Проработка',
+                subtitle='Профессии, которые Вам подходят:',
+                info=self._processing_dict('professions')  # type: ignore
+            )
+        ]
+
+    @property
+    def talents_analytic(self):
+        set_vertex = set([self._money.inv_vertex, self._money.vertex])
+
+        set_talents = set(
+            [self._money.pat_vertex,
+             self._money.mat_vertex,
+             self._money.inv_pat_vertex,
+             self._money.inv_mat_vertex]
+        )
+
+        self._talents_list = []
+        for number in (set_talents - set_vertex):
+            self._talents_list.extend(self._talents_dict.get(number))
+
+        return [
+            Section(
+                title='Таланты',
+                subtitle='Таланты, переданные вашим родом:',
+                info=self._talents_list  # type: ignore
+            )
+        ]
+
+    def get_all_sections(self) -> List[Section]:
         """
         Возвращает список словарей для создания страницы
         Returns:
             List: Список словарей c необходимой информацией
         """
 
-        self.mon_dict = self.money_dict.get(
-            self.money.vertex, None)
+        all_sections = self.money_analytic
+        processing_flag, talent_flag = self.which_dict()
 
-        if not self.mon_dict:
+        if processing_flag:
+            all_sections.extend(self.processing_analytic)
+
+        if talent_flag:
+            all_sections.extend(self.talents_analytic)
+
+        return all_sections
+
+    def which_dict(self) -> List:
+        """Возвращает список ключей для определения участия словарей 
+        в заполнения аналитики ДТ по определенному алгоритму
+        вершина перевернутого треугольника не должна быть равна вершине основного
+        треугольника и значения талантов не должны совпадать ни с вершиной
+        основного треугольника, ни с вершиной перевернутого
+
+        Returns:
+            List[Dict]: Список ключей
+        """
+
+        set_vertex = set([self._money.inv_vertex, self._money.vertex])
+
+        processing_flag = True if len(set_vertex) == 2 else False
+
+        set_talents = set(
+            [self._money.pat_vertex,
+             self._money.mat_vertex,
+             self._money.inv_pat_vertex,
+             self._money.inv_mat_vertex]
+        )
+        talent_flag = True if len(set_talents - set_vertex) else False
+
+        return [processing_flag, talent_flag]
+
+    def _is_dict_correct(self) -> bool:
+        if not self._money_dict:
             logger.error(
-                f'В словаре money_dict отсутствует информация по ключу {self.money.vertex}')
-            raise ValueError('В словаре недостаточно данных')
+                f'В словаре money_dict отсутствует информация по ключу {self._money.vertex}')
 
-        money_list = [self.mon_dict]
+        if not self._processing_dict:
+            logger.error(
+                f'В словаре processing_dict отсутствует информация по ключу {self._money.inv_vertex}')
 
-        if self.money.inv_vertex != self.money.vertex:
-            self.proc_dict = self.processing_dict.get(
-                self.money.inv_vertex, None)
+        if not self._talents_mat:
+            logger.error(
+                f'В словаре talents_dict отсутствует информация по ключу {self._money.mat_vertex}')
 
-            if not self.proc_dict:
-                logger.error(
-                    f'В словаре processing_dict отсутствует информация по ключу {self.money.inv_vertex}')
-                raise ValueError('В словаре недостаточно данных')
+        if not self._talents_pat:
+            logger.error(
+                f'В словаре talents_dict отсутствует информация по ключу {self._money.pat_vertex}')
 
-            money_list.append(self.proc_dict)
+        if not self._talents_inv_mat:
+            logger.error(
+                f'В словаре talents_dict отсутствует информация по ключу {self._money.inv_mat_vertex}')
 
-        for number in [self.money.mat_vertex, self.money.pat_vertex, self.money.inv_mat_vertex, self.money.inv_pat_vertex]:
+        if not self._talents_inv_pat:
+            logger.error(
+                f'В словаре talents_dict отсутствует информация по ключу {self._money.inv_pat_vertex}')
 
-            if number not in [self.money.vertex, self.money.inv_vertex]:
-
-                self.tal_dict = self.talents_dict.get(number, None)
-                if not self.tal_dict:
-                    logger.error(
-                        f'В словаре talents_dict отсутствует информация по ключу {number}')
-                    raise ValueError('В словаре недостаточно данных')
-                else:
-                    money_list.append({str(number): self.tal_dict})
-
-        return money_list
+        return all([self._money_dict, self._processing_dict,
+                    self._talents_mat, self._talents_pat,
+                    self._talents_inv_mat, self._talents_inv_pat]
+                   )

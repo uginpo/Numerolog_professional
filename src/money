@@ -6,7 +6,6 @@ import os
 from business_logic.arcanes_classes import Client, Star, Triangle
 
 from input_module.clients_info import get_client_info
-from data_requests.data_for_text import get_star_analytic
 from data_requests.data_combiner import combine_all_data
 from reports.pdf_creator import create_star_report, create_money_report
 
@@ -43,7 +42,6 @@ def main():
     logger.debug(f'{page_money_content}')
 
     # 4. Подготовка данных для создания страниц ТД.
-    # logger.info("Создание аналитики ТД...")
     # page_money_analytic = get_money_analytic(money=client_money)
     # logger.debug(f'{page_money_analytic}')
     # logger.info("Аналитика звезды создана")
