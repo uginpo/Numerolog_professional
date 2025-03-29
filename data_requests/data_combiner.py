@@ -4,8 +4,8 @@ from typing import Dict, List, Any, Tuple
 
 from loguru import logger
 
-from report_storage.configurations.position_class import StarPositions, TrianglePositions
-from report_storage.configurations.font_colors_class import FontsColorsConfig
+from report_storage.position_class import StarPositions, TrianglePositions
+from report_storage.font_colors_class import FontsColorsConfig
 
 
 def combine_all_data(image_content: Dict, text_content: List, page_name: str) -> List:
@@ -91,13 +91,11 @@ def combine_text_data(text_content: List, page_name: str) -> TextPageData:
     subtitle_font = fonts_dict.get('subtitle_text')
     info_font = fonts_dict.get('plain_text')
 
-    match page_name:
-        case 'star':
-            # Дополняем данные в Section информацией о шрифтах
-            for item in text_content:
-                item.subtitle_font = subtitle_font
-                item.title_font = title_font
-                item.info_font = info_font
+    # Дополняем данные в Section информацией о шрифтах
+    for item in text_content:
+        item.subtitle_font = subtitle_font
+        item.title_font = title_font
+        item.info_font = info_font
 
     union_text = TextPageData(
         background_color=background_color,

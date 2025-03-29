@@ -81,12 +81,12 @@ class FontsColorsConfig:
     @property
     def background_color(self) -> Tuple[int, int, int]:
         """Настройки для заголовков аналитики"""
-        return self._create_color_settings("#0C182E")
+        return self._create_color_settings("#DFFEF9")
 
     @property
     def text_color(self) -> Tuple[int, int, int]:
         """Настройки для заголовков аналитики"""
-        return self._create_color_settings("#DDF8F8")
+        return self._create_color_settings("#211A4E")
 
     @property
     def title_text(self) -> Dict:

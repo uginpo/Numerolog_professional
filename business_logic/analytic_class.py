@@ -134,6 +134,7 @@ class MoneyAnalyticInfo:
         self._talents_inv_pat = talents_dict.get(
             self._money.inv_pat_vertex, None
         )
+        self._talents_dict = talents_dict
 
         if not self._is_dict_correct():
             raise ValueError('В словаре(словарях) недостаточно данных')
@@ -180,7 +181,7 @@ class MoneyAnalyticInfo:
             Section(
                 title='Проработка',
                 subtitle='Профессии, которые Вам подходят:',
-                info=self._processing_dict('professions')  # type: ignore
+                info=self._processing_dict.get('professions')  # type: ignore
             )
         ]
 

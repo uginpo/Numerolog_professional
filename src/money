@@ -4,6 +4,7 @@ from pathlib import Path
 import os
 
 from business_logic.arcanes_classes import Client, Star, Triangle
+from business_logic.analytic_class import MoneyAnalyticInfo
 
 from input_module.clients_info import get_client_info
 from data_requests.data_combiner import combine_all_data
@@ -42,14 +43,14 @@ def main():
     logger.debug(f'{page_money_content}')
 
     # 4. Подготовка данных для создания страниц ТД.
-    # page_money_analytic = get_money_analytic(money=client_money)
-    # logger.debug(f'{page_money_analytic}')
-    # logger.info("Аналитика звезды создана")
+    page_money_analytic = MoneyAnalyticInfo(
+        money=client_money).get_all_sections()
+    logger.debug(f'{page_money_analytic}')
 
     # 5. Объединение данных для создания страниц с настройками
     logger.info("Объединение данных для итогового отчета...")
     union_money_data = combine_all_data(
-        page_money_content, '',
+        page_money_content, page_money_analytic,
         page_name='money'
     )
     logger.debug(f'Объединенные данные {union_money_data}')
@@ -57,7 +58,7 @@ def main():
 
     # 6. Создание отчета в виде pdf файла.
     result = create_money_report(union_money_data)
-    logger.info("Завершение создания страницы star")
+    logger.info("Завершение создания страницы ДТ")
     # Завершение создания страницы star
 
     # Завершение работы программы
