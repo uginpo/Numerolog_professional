@@ -11,7 +11,9 @@ class CustomPDF(FPDF):
     def __init__(self, orientation="P", unit="mm", format="A4"):
         # Вызываем конструктор родительского класса с указанными параметрами
         super().__init__(orientation=orientation, unit=unit, format=format)
-
+        # Флаг, указывающий, что новую страницу нужно залить цветом
+        self._needs_background = False
+        self._background_color = (0, 0, 0)
         # добавление пользовательских шрифтов
         self.add_font('roboto_bold', '',
                       'report_storage/fonts/Roboto Mono Bold for Powerline.ttf', uni=True)
@@ -22,7 +24,15 @@ class CustomPDF(FPDF):
         self.add_font('roboto_light', '',
                       'report_storage/fonts/Roboto Mono Light for Powerline.ttf', uni=True)
 
+    def add_page(self, orientation=""):
+        """Переопределяем add_page, чтобы добавлять заливку при необходимости"""
+        super().add_page(orientation)
+        if self._needs_background:
+            self._fill_page_with_color(self._background_color)
+            # self._needs_background = False  # Сбрасываем флаг
+
     def create_image_page(self, page_data: ImagePageData):
+        self._needs_background = False
         self.add_page()
         self.image(page_data.image_path, x=0, y=0, w=self.w)
 
@@ -34,7 +44,7 @@ class CustomPDF(FPDF):
                 int(text_element.font["size"])  # type: ignore
             )
             # Устанавливаем цвет
-            self.set_text_color(*text_element.color)
+            self.set_text_color(*text_element.color)  # type: ignore
 
             # Проверяем, что position и text не являются None
             if text_element.position and text_element.text:
@@ -46,7 +56,7 @@ class CustomPDF(FPDF):
                 self._add_centered_text(
                     x=x, y=y,
                     text=text_element.text,
-                    text_width=text_width, text_height=text_height)
+                    text_width=text_width, text_height=text_height)  # type: ignore
 
             else:
                 raise ValueError(
@@ -56,13 +66,15 @@ class CustomPDF(FPDF):
 
         # Установка общего цвета текста
         self.set_text_color(*page_data.text_color)
+        self._background_color = page_data.background_color
+        self._needs_background = True
 
         old_title = ''
         for section in page_data.sections:
             # Проверяем место на странице перед добавлением заголовка раздела
             if self.y + 20 > self.h - 20:  # Если нет места для нового контента
                 # Создаем новую страницу с цветом фона
-                self._add_colored_page(page_data.background_color)
+                self.add_page()
 
             # Устанавливаем шрифт заголовка раздела
             self.set_font(
@@ -78,7 +90,7 @@ class CustomPDF(FPDF):
                 self.ln(5)  # Отступ после названия раздела
                 if self.y + 20 > self.h - 20:  # Если нет места для нового контента
                     #    Создаем новую страницу с цветом фона
-                    self._add_colored_page(page_data.background_color)
+                    self.add_page()
 
             # Устанавливаем шрифт подзаголовка
             if section.subtitle and section.subtitle_font:
@@ -92,7 +104,7 @@ class CustomPDF(FPDF):
                 self.ln(2)  # Отступ после подзаголовка
                 if self.y + 20 > self.h - 20:  # Если нет места для нового контента
                     # Создаем новую страницу с цветом фона
-                    self._add_colored_page(page_data.background_color)
+                    self.add_page()
 
             # Устанавливаем шрифт основного текста
             self.set_font(
@@ -114,12 +126,11 @@ class CustomPDF(FPDF):
 
                 if self.y + 20 > self.h - 20:  # Если нет места для нового контента
                     # Создаем новую страницу с цветом фона
-                    self._add_colored_page(page_data.background_color)
+                    self.add_page()
             self.ln(5)
 
-    def _add_colored_page(self, background_color: Tuple[int, int, int]):
+    def _fill_page_with_color(self, background_color):
         """Создает новую страницу с заданным цветом фона"""
-        self.add_page()
         self.set_fill_color(*background_color)
         # Прямоугольник со страницей, заполненный цветом
         self.rect(0, 0, self.w, self.h, 'F')
@@ -147,5 +158,13 @@ class CustomPDF(FPDF):
         self.set_xy(centered_x, centered_y)
 
         # Выводим текст
-        self.cell(w=text_width, h=self.font_size, txt=text, align="C")
+        self.cell(w=text_width,
+                  h=self.font_size,
+                  txt=text,
+                  align="C")  # type: ignore
         self.set_xy(self.w, self.h)
+
+    def accept_page_break(self):
+        """Указываем, что следующая страница должна быть с заливкой"""
+        self._needs_background = True
+        return True  # Разрешаем разрыв страницы
