@@ -1,0 +1,62 @@
+#!/Users/user/PythonProjects/Numerolog_professional/.venv/bin/python3.13
+from loguru import logger
+from pathlib import Path
+import os
+from collections import defaultdict
+
+from business_logic.arcanes_classes import Client, Star, Triangle
+
+from input_module.package_info import get_client_info
+from utils.data_to_text import save_to_text_file
+
+from statistic_service.clients_bd import clients_list
+from config.data_path import OUTPUT_PATH
+
+
+# Основная функция программы
+@logger.catch
+def main():
+    """
+    Главная функция программы. Выполняет следующие шаги:
+    1. Получение данных клиентов. - client_list
+    2. Создание арканов для треугольника денег (ТД) по данным клиента.
+    3. 
+    """
+
+    money_clients_dict = defaultdict(int)
+
+    for client in clients_list:
+        # 1. Получение данных клиента
+        client_info = get_client_info(client)
+
+        # 2. Создание арканов для ТД по данным клиента.
+        client_star = Star(client_info)
+        client_money = Triangle(client_star)
+
+        # 3. Подготовка данных по всем клиентам для статистики.
+        for value in set(client_money.get_all_content().values()):
+            money_clients_dict[value] += 1
+
+        # Завершение работы программы
+    # Создаем новый словарь, отсортированный по ключам
+    sorted_clients_dict = dict(
+        sorted(money_clients_dict.items(), key=lambda item: item[1], reverse=True))
+
+    # Подготовка данных для созранения в текстовый файл
+    data = [f'Значение аркана: {int(key)} - количество повторений: {value}' for key,
+            value in sorted_clients_dict.items()]
+    data.extend(
+        ['', f'Эти значения были сформированы по данным {len(clients_list)} клиентов'])
+
+    file_name = OUTPUT_PATH/'clients_statistic.txt'
+    save_to_text_file(file_path=file_name, data=data)
+
+    logger.debug(f'Статистика арканов {sorted_clients_dict}')
+    logger.info("Программа успешно завершила работу.")
+
+
+# Точка входа в программу
+if __name__ == "__main__":
+    from utils.log_utils import configure_logger
+    configure_logger()
+    main()

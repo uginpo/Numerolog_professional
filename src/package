@@ -1,4 +1,4 @@
-#!/Users/user/PythonProjects/Numerolog_free/.venv/bin/python3.13
+#!/Users/user/PythonProjects/Numerolog_professional/.venv/bin/python3.13
 from loguru import logger
 from pathlib import Path
 import os
@@ -9,6 +9,8 @@ from business_logic.analytic_class import MoneyAnalyticInfo
 from input_module.package_info import get_client_info
 from data_requests.data_combiner import combine_all_data
 from reports.pdf_creator import create_star_report, create_money_report
+
+from statistic_service.clients_bd import clients_list
 
 # Основная функция программы
 
@@ -42,7 +44,6 @@ def main():
                     ('Елена Ясевич', '12.12.1978'),
                     ('Дмитрий Волхов', '27.10.1988'),
                     ('Александр Шепс', '26.11.1986'),
-                    ('Джулия Ванг', '29.10.1981'),
                     ('Виктория Райдос', '27.12.1976'),
                     ('Свами Даши', '22.8.1967'),
                     ('Константин Гецати', '7.7.1987'),
@@ -54,6 +55,9 @@ def main():
                     ('Артем краснов', '28.08.1998'),
                     ('Снежана', '4.2.1981'),
                     ('Алина', '15.10.1982'),
+                    ('Виктория', '26.10.1989'),
+                    ('Джулия', '19.10.1981'),
+                    ('Свами Даши', '22.08.1967')
                     ]
 
     for client in clients_list:
@@ -89,10 +93,9 @@ def main():
         # Завершение создания страницы star
 
         # Завершение работы программы
-    logger.info("Программа успешно завершила работу.")
+        logger.info("Программа успешно завершила работу.")
 
-
-# Точка входа в программу
+        # Точка входа в программу
 if __name__ == "__main__":
     from utils.log_utils import configure_logger
     configure_logger()
