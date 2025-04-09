@@ -62,6 +62,53 @@ class TrianglePositions(BasePositions):
         super().__init__(coordinates_px, scale)
 
 
+class FullStarPositions(BasePositions):
+    """Класс для хранения координат страницы 'Полная Звезда'"""
+
+    def __init__(self, scale: float = SCALE_PX_MM):
+        coordinates_px = {
+            # header
+            "header_text": (1190, 296),
+
+            # main arcanes
+            "personality": (184, 1291),
+            "spirituality": (1190, 527),
+            "money": (2196, 1291),
+            "relationship": (1914, 2116),
+            "health": (466, 2116),
+            "mission": (1190, 1683),
+            # errors arcanes
+            "pat_male_line_err": (896, 1291),
+            "mat_male_line_err": (1484, 1291),
+            "pat_female_line_err": (1699, 1849),
+            "doom_err": (1190, 2201),
+            "mat_female_line_err": (687, 1849),
+            # trianges arcanes
+            "personal_inv_vertex": (927, 1614),
+            "personal_inv_mat_vertex": (541, 1291),
+            "personal_inv_pat_vertex": (413, 1614),
+            "spirituality_inv_vertex": (1190, 1412),
+            "spirituality_inv_mat_vertex": (1388, 949),
+            "spirituality_inv_pat_vertex": (992, 949),
+            "money_inv_vertex": (1454, 1614),
+            "money_inv_mat_vertex": (1968, 1614),
+            "money_inv_pat_vertex": (1840, 1291),
+            "relationship_inv_vertex": (1346, 1904),
+            "relationship_inv_mat_vertex": (1454, 2370),
+            "relationship_inv_pat_vertex": (1780, 2178),
+            "health_inv_vertex": (1034, 1904),
+            "health_inv_mat_vertex": (601, 2178),
+            "health_inv_pat_vertex": (927, 2370),
+
+            "foot_personality": (781, 2993),
+            "foot_spirituality": (985, 2993),
+            "foot_money": (1190, 2993),
+            "foot_relationship": (1395, 2993),
+            "foot_health": (1599, 2993)
+        }
+        super().__init__(coordinates_px, scale)
+
+
 """
 ---------------------------------------------------
 Вариант использования

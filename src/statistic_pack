@@ -20,7 +20,7 @@ def main():
     Главная функция программы. Выполняет следующие шаги:
     1. Получение данных клиентов. - client_list
     2. Создание арканов для треугольника денег (ТД) по данным клиента.
-    3. 
+    3. Подсчет и вывод статистики клиентов
     """
 
     money_clients_dict = defaultdict(int)
@@ -37,7 +37,6 @@ def main():
         for value in set(client_money.get_all_content().values()):
             money_clients_dict[value] += 1
 
-        # Завершение работы программы
     # Создаем новый словарь, отсортированный по ключам
     sorted_clients_dict = dict(
         sorted(money_clients_dict.items(), key=lambda item: item[1], reverse=True))
@@ -50,6 +49,7 @@ def main():
 
     file_name = OUTPUT_PATH/'clients_statistic.txt'
     save_to_text_file(file_path=file_name, data=data)
+    # Завершение работы программы
 
     logger.debug(f'Статистика арканов {sorted_clients_dict}')
     logger.info("Программа успешно завершила работу.")
