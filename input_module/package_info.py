@@ -5,9 +5,9 @@ from datetime import datetime
 from config import globals
 
 
-def get_client_info(client) -> Client:
+def get_client_info(client: tuple) -> Client:
     """Обращается к функции ввода имени и ДР клиента
-
+        client: tuple (name, date_str) имя и ДР строкой
     Returns:
         Client: Имя и ДР Клиента
     """

@@ -220,13 +220,38 @@ class Triangle:
     основного и перевернутого треугольника
     """
 
-    def __init__(self, star: Star) -> None:
+    def __init__(self, star: Star, pointer: str = 'money') -> None:
         self.star = star  # Храним ссылку на объект Star
 
     # Блок основного треугольника
-        self.vertex = self.star.money
-        self.mat_vertex = self.star.mat_male_line_err
-        self.pat_vertex = self.star.pat_female_line_err
+        match pointer:
+            case 'personality':
+                self.vertex = self.star.personality
+                self.mat_vertex = self.star.mat_female_line_err
+                self.pat_vertex = self.star.pat_male_line_err
+
+            case 'spirituality':
+                self.vertex = self.star.spirituality
+                self.mat_vertex = self.star.pat_male_line_err
+                self.pat_vertex = self.star.mat_male_line_err
+
+            case 'money':
+                self.vertex = self.star.money
+                self.mat_vertex = self.star.mat_male_line_err
+                self.pat_vertex = self.star.pat_female_line_err
+
+            case 'relationship':
+                self.vertex = self.star.relationship
+                self.mat_vertex = self.star.pat_female_line_err
+                self.pat_vertex = self.star.doom_err
+
+            case 'health':
+                self.vertex = self.star.health
+                self.mat_vertex = self.star.doom_err
+                self.pat_vertex = self.star.mat_female_line_err
+
+            case _:
+                raise ValueError('Нет такого типа треугольника')
 
         # Блок перевернутого треугольника
         # Вершина перевернутого треугольника
@@ -254,6 +279,16 @@ class Triangle:
             "vertex": str(self.vertex),
             "mat_vertex": str(self.mat_vertex),
             "pat_vertex": str(self.pat_vertex),
+            "inv_vertex": str(self.inv_vertex),
+            "inv_mat_vertex": str(self.inv_mat_vertex),
+            "inv_pat_vertex": str(self.inv_pat_vertex),
+        }
+
+    def get_inv_triangle(self) -> Dict:
+        """Возвращает словарь с данными
+        перевернутого треугольника для страницы FullStar
+        """
+        return {
             "inv_vertex": str(self.inv_vertex),
             "inv_mat_vertex": str(self.inv_mat_vertex),
             "inv_pat_vertex": str(self.inv_pat_vertex),

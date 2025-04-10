@@ -5,15 +5,19 @@ from datetime import datetime
 from config import globals
 
 
-def get_client_info() -> Client:
+def get_client_info(client: tuple | None = None) -> Client:
     """Обращается к функции ввода имени и ДР клиента
 
     Returns:
         Client: Имя и ДР Клиента
     """
-    client = enter_data()
-
-    full_name, birthday = client
+    match client:
+        case None:
+            client = enter_data()
+            full_name, birthday = client
+        case _:
+            full_name, date_str = client
+            birthday = datetime.strptime(date_str, '%d.%m.%Y').date()
 
     # Если имя длинное - в выводе на страницы оставляем только имя
     name = full_name.strip() if len(

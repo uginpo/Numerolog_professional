@@ -36,6 +36,14 @@ class FontsColorsConfig:
         }
 
     @property
+    def fullstar_main(self) -> Dict:
+        """Настройки для 'Личности'"""
+        return {
+            "font": self._create_font_settings("roboto_regular", 220),
+            "color": self._create_color_settings("#F11616")
+        }
+
+    @property
     def errors(self) -> Dict:
         """Настройки для ошибок"""
         return {
@@ -44,11 +52,27 @@ class FontsColorsConfig:
         }
 
     @property
+    def fullstar_errors(self) -> Dict:
+        """Настройки для 'Личности'"""
+        return {
+            "font": self._create_font_settings("roboto_regular", 200),
+            "color": self._create_color_settings("#00FFED")
+        }
+
+    @property
     def mission(self) -> Dict:
         """Настройки для 'Миссии'"""
         return {
             "font": self._create_font_settings("roboto_regular", 300),
             "color": self._create_color_settings("#FF693A")
+        }
+
+    @property
+    def triangles_text(self) -> Dict:
+        """Настройки для вершины треугольника"""
+        return {
+            "font": self._create_font_settings("roboto_regular", 145),
+            "color": self._create_color_settings("#A9AAAA")
         }
 
     @property
@@ -112,7 +136,7 @@ class FontsColorsConfig:
             "money": self.main_text,
             "relationship": self.main_text,
             "health": self.main_text,
-            "mission": self.mission,
+            "mission": self.main_text,
             "pat_male_line_err": self.errors,
             "mat_male_line_err": self.errors,
             "pat_female_line_err": self.errors,
@@ -123,6 +147,45 @@ class FontsColorsConfig:
             "foot_money": self.footer_text,
             "foot_relationship": self.footer_text,
             "foot_health": self.footer_text,
+        }
+        return attributes
+
+    def get_fullstar_attributes(self) -> Dict:
+        """Возвращает все атрибуты звезды"""
+        attributes = {
+            "header_text": self.header_text,
+            "personality": self.fullstar_main,
+            "spirituality": self.fullstar_main,
+            "money": self.fullstar_main,
+            "relationship": self.fullstar_main,
+            "health": self.fullstar_main,
+            "mission": self.fullstar_main,
+            "pat_male_line_err": self.fullstar_errors,
+            "mat_male_line_err": self.fullstar_errors,
+            "pat_female_line_err": self.fullstar_errors,
+            "doom_err": self.fullstar_errors,
+            "mat_female_line_err": self.fullstar_errors,
+            "foot_personality": self.footer_text,
+            "foot_spirituality": self.footer_text,
+            "foot_money": self.footer_text,
+            "foot_relationship": self.footer_text,
+            "foot_health": self.footer_text,
+
+            "personal_inv_vertex": self.triangles_text,
+            "personal_inv_mat_vertex": self.triangles_text,
+            "personal_inv_pat_vertex": self.triangles_text,
+            "spirituality_inv_vertex": self.triangles_text,
+            "spirituality_inv_mat_vertex": self.triangles_text,
+            "spirituality_inv_pat_vertex": self.triangles_text,
+            "money_inv_vertex": self.triangles_text,
+            "money_inv_mat_vertex": self.triangles_text,
+            "money_inv_pat_vertex": self.triangles_text,
+            "relationship_inv_vertex": self.triangles_text,
+            "relationship_inv_mat_vertex": self.triangles_text,
+            "relationship_inv_pat_vertex": self.triangles_text,
+            "health_inv_vertex": self.triangles_text,
+            "health_inv_mat_vertex": self.triangles_text,
+            "health_inv_pat_vertex": self.triangles_text,
         }
         return attributes
 

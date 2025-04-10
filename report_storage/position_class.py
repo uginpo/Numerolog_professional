@@ -69,13 +69,12 @@ class FullStarPositions(BasePositions):
         coordinates_px = {
             # header
             "header_text": (1190, 296),
-
             # main arcanes
             "personality": (184, 1291),
             "spirituality": (1190, 527),
             "money": (2196, 1291),
-            "relationship": (1914, 2116),
-            "health": (466, 2116),
+            "relationship": (1914, 2554),
+            "health": (466, 2554),
             "mission": (1190, 1683),
             # errors arcanes
             "pat_male_line_err": (896, 1291),
@@ -83,6 +82,13 @@ class FullStarPositions(BasePositions):
             "pat_female_line_err": (1699, 1849),
             "doom_err": (1190, 2201),
             "mat_female_line_err": (687, 1849),
+            # footer arcanes
+            "foot_personality": (781, 2993),
+            "foot_spirituality": (985, 2993),
+            "foot_money": (1190, 2993),
+            "foot_relationship": (1395, 2993),
+            "foot_health": (1599, 2993),
+
             # trianges arcanes
             "personal_inv_vertex": (927, 1614),
             "personal_inv_mat_vertex": (541, 1291),
@@ -99,12 +105,6 @@ class FullStarPositions(BasePositions):
             "health_inv_vertex": (1034, 1904),
             "health_inv_mat_vertex": (601, 2178),
             "health_inv_pat_vertex": (927, 2370),
-
-            "foot_personality": (781, 2993),
-            "foot_spirituality": (985, 2993),
-            "foot_money": (1190, 2993),
-            "foot_relationship": (1395, 2993),
-            "foot_health": (1599, 2993)
         }
         super().__init__(coordinates_px, scale)
 

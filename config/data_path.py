@@ -5,6 +5,7 @@ TEMPLATES_PATH = Path('templates/image_templates')
 
 STAR_IMG = 'star.jpg'
 MONEY_IMG = 'money.jpg'
+FULLSTAR_IMG = 'fullstar.jpg'
 
 
 # Блок с путем к конечным файлам - профайлингам pdf

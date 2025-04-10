@@ -5,6 +5,7 @@ from typing import Dict, List, Any, Tuple
 from loguru import logger
 
 from report_storage.position_class import StarPositions, TrianglePositions
+from report_storage.position_class import FullStarPositions
 from report_storage.font_colors_class import FontsColorsConfig
 
 
@@ -26,9 +27,9 @@ def combine_all_data(image_content: Dict, text_content: List, page_name: str) ->
         page_name=page_name
     )
     # union_text: TextPageData = combine_star_text_data(text_content)
-    union_text: TextPageData = combine_text_data(
+    union_text: TextPageData | None = combine_text_data(
         text_content,
-        page_name=page_name)
+        page_name=page_name) if text_content else None
 
     return [union_data, union_text]
 
@@ -45,7 +46,7 @@ def combine_image_data(image_content: Dict, page_name: str) -> List:
     match page_name:
         case 'star':
             # Получаем координаты
-            data_positions: StarPositions | TrianglePositions = StarPositions()
+            data_positions: StarPositions | TrianglePositions | FullStarPositions = StarPositions()
             # Получаем шрифты
             fonts_list = fonts_colors.get_star_attributes().values()
 
@@ -54,6 +55,12 @@ def combine_image_data(image_content: Dict, page_name: str) -> List:
             data_positions = TrianglePositions()
             # Получаем шрифты
             fonts_list = fonts_colors.get_triangle_attributes().values()
+
+        case 'fullstar':
+            # Получаем координаты
+            data_positions = FullStarPositions()
+            # Получаем шрифты
+            fonts_list = fonts_colors.get_fullstar_attributes().values()
 
     positions = data_positions.get_all_positions().values()
     # Получаем значения арканов
@@ -66,7 +73,7 @@ def combine_image_data(image_content: Dict, page_name: str) -> List:
     return combined_list
 
 
-def combine_text_data(text_content: List, page_name: str) -> TextPageData:
+def combine_text_data(text_content: List, page_name: str) -> TextPageData | None:
     """Объединяет данные аналитики с координатами и шрифтами
 
     Args:
@@ -75,6 +82,8 @@ def combine_text_data(text_content: List, page_name: str) -> TextPageData:
     Returns:
         List: Объединенные данные
     """
+    if text_content == None:
+        return None
 
     # Получаем шрифты
     fonts_colors = FontsColorsConfig()
