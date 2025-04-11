@@ -160,6 +160,8 @@ class FontsColorsConfig:
             "relationship": self.fullstar_main,
             "health": self.fullstar_main,
             "mission": self.fullstar_main,
+            "mission_err": self.fullstar_main,
+            "mission_all": self.fullstar_main,
             "pat_male_line_err": self.fullstar_errors,
             "mat_male_line_err": self.fullstar_errors,
             "pat_female_line_err": self.fullstar_errors,

@@ -76,6 +76,8 @@ class FullStarPositions(BasePositions):
             "relationship": (1914, 2554),
             "health": (466, 2554),
             "mission": (1190, 1683),
+            "mission_err": (1034, 1683),
+            "mission_all": (1346, 1683),
             # errors arcanes
             "pat_male_line_err": (896, 1291),
             "mat_male_line_err": (1484, 1291),

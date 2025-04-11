@@ -54,6 +54,14 @@ class Star:
         return digital_root(self.personality + self.spirituality + self.money + self.relationship + self.health)
 
     @property
+    def mission_err(self) -> int:
+        return digital_root(self.pat_male_line_err + self.pat_male_line_err + self.pat_female_line_err + self.mat_female_line_err + self.doom_err)
+
+    @property
+    def mission_all(self) -> int:
+        return digital_root(self.mission + self.mission_err)
+
+    @property
     def foot_personality(self) -> int:
         return digital_root(self.client_info.birthday.day, arcanes_number=9)
 
@@ -106,6 +114,8 @@ class Star:
             "relationship": str(self.relationship),
             "health": str(self.health),
             "mission": str(self.mission),
+            "mission_err": str(self.mission_err),
+            "mission_all": str(self.mission_all),
             "pat_male_line_err": str(self.pat_male_line_err),
             "mat_male_line_err": str(self.mat_male_line_err),
             "pat_female_line_err": str(self.pat_female_line_err),
