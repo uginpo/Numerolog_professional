@@ -271,13 +271,13 @@ class Triangle:
         )
 
         # Материнский род (слева)
-        self.inv_mat_vertex = digital_root(
+        self.inv_pat_vertex = digital_root(
             self.mat_vertex +
             self.vertex
         )
 
         # Отцовский род (справа)
-        self.inv_pat_vertex = digital_root(
+        self.inv_mat_vertex = digital_root(
             self.pat_vertex +
             self.vertex
         )

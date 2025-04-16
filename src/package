@@ -6,9 +6,10 @@ import os
 from business_logic.arcanes_classes import Client, Star, Triangle
 from business_logic.analytic_class import MoneyAnalyticInfo
 
-from input_module.package_info import get_client_info
+from input_module.clients_info import get_client_info
 from data_requests.data_combiner import combine_all_data
-from reports.pdf_creator import create_star_report, create_money_report
+from data_requests.fullstar_data import get_fullstar_data
+from reports.pdf_creator import create_numerology_report
 
 from statistic_service.clients_bd import clients_list
 
@@ -63,34 +64,23 @@ def main():
     for client in clients_list:
         client_info = get_client_info(client)
 
-        # 2. Создание арканов для ТД по данным клиента.
-        client_star = Star(client_info)
-        client_money = Triangle(client_star)
+        # 2. Создание арканов для Полной Звезды по данным клиента.
+        star = Star(client_info)
 
-        # 3. Подготовка данных для создания страницы ТД.
-        page_star_content = client_star.get_all_content()
-        page_money_content = client_money.get_all_content()
+        # 3. Подготовка данных для создания страницы Полная Звезда.
+        page_fullstar_content = get_fullstar_data(star=star)
 
         # 4. Подготовка данных для создания страниц ТД.
-        page_star_analytic = ''
-
-        page_money_analytic = ''
-
-        # 5. Объединение данных для создания страниц с настройками
-        union_star_data = combine_all_data(
-            page_star_content, page_star_analytic,
-            page_name='star'
+        page_fullstar_analytic = []
+        union_fullstar_data = combine_all_data(
+            page_fullstar_content, page_fullstar_analytic,
+            page_name='fullstar'
         )
-
-        union_money_data = combine_all_data(
-            page_money_content, page_money_analytic,
-            page_name='money'
+        # 5. Создание отчета в виде pdf файла.
+        result = create_numerology_report(
+            union_fullstar_data,
+            pointer='fullstar'
         )
-
-        # 6. Создание отчета в виде pdf файла.
-        result = create_star_report(union_star_data)
-        result = create_money_report(union_money_data)
-        # Завершение создания страницы star
 
         # Завершение работы программы
         logger.info("Программа успешно завершила работу.")

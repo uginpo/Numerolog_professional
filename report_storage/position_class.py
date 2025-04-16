@@ -1,22 +1,20 @@
-from typing import Dict, Tuple
-
 from config.settings import SCALE_PX_MM
 
 
 class BasePositions:
     """Базовый класс для хранения и преобразования координат"""
 
-    def __init__(self, coordinates_px: Dict, scale: float = SCALE_PX_MM):
+    def __init__(self, coordinates_px: dict[str, tuple[int, int]], scale: float = SCALE_PX_MM):
         self.scale = scale
         self._coordinates_px = coordinates_px
 
     @property
-    def positions_mm(self) -> Dict:
+    def positions_mm(self) -> dict[str, tuple[float, float]]:
         """Преобразует координаты из пикселей в миллиметры"""
         return {key: (value[0] * self.scale, value[1] * self.scale)
                 for key, value in self._coordinates_px.items()}
 
-    def get_all_positions(self) -> Dict:
+    def get_all_positions(self) -> dict[str, tuple[float, float]]:
         """Возвращает полный словарь позиций в миллиметрах"""
         return self.positions_mm
 
@@ -75,8 +73,8 @@ class FullStarPositions(BasePositions):
             "money": (2196, 1291),
             "relationship": (1914, 2554),
             "health": (466, 2554),
-            "mission": (1190, 1683),
-            "mission_err": (1034, 1683),
+            "mission": (1034, 1683),
+            "mission_err": (1190, 1683),
             "mission_all": (1346, 1683),
             # errors arcanes
             "pat_male_line_err": (896, 1291),
@@ -90,7 +88,6 @@ class FullStarPositions(BasePositions):
             "foot_money": (1190, 2993),
             "foot_relationship": (1395, 2993),
             "foot_health": (1599, 2993),
-
             # trianges arcanes
             "personal_inv_vertex": (927, 1614),
             "personal_inv_mat_vertex": (541, 1291),
