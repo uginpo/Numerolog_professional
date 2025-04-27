@@ -17,12 +17,13 @@ def get_client_info(client: tuple | None = None) -> Client:
             full_name, birthday = client
         case _:
             full_name, date_str = client
-            birthday = datetime.strptime(date_str, '%d.%m.%Y').date()
+            birthday = datetime.strptime(date_str, "%d.%m.%Y").date()
 
     # Если имя длинное - в выводе на страницы оставляем только имя
-    name = full_name.strip() if len(
-        full_name) <= 10 else full_name.strip().split(' ')[0]
+    name = (
+        full_name.strip() if len(full_name) <= 10 else full_name.strip().split(" ")[0]
+    )
 
-    globals.CLIENT_FULL_NAME = f'{full_name.strip()} {birthday.strftime("%d.%m.%Y")}'
+    globals.CLIENT_FULL_NAME = f"{full_name.strip()} {birthday.strftime('%d.%m.%Y')}"
 
     return Client(name=name, birthday=birthday)

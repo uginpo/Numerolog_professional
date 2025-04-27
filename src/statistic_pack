@@ -1,12 +1,10 @@
 #!/Users/user/PythonProjects/Numerolog_professional/.venv/bin/python3.13
 from loguru import logger
-from pathlib import Path
-import os
 from collections import defaultdict
 
-from business_logic.arcanes_classes import Client, Star, Triangle
+from business_logic.arcanes_classes import Star, Triangle
 
-from input_module.package_info import get_client_info
+from input_module.clients_info import get_client_info
 from utils.data_to_text import save_to_text_file
 
 from statistic_service.clients_bd import clients_list
@@ -39,24 +37,29 @@ def main():
 
     # Создаем новый словарь, отсортированный по ключам
     sorted_clients_dict = dict(
-        sorted(money_clients_dict.items(), key=lambda item: item[1], reverse=True))
+        sorted(money_clients_dict.items(), key=lambda item: item[1], reverse=True)
+    )
 
     # Подготовка данных для созранения в текстовый файл
-    data = [f'Значение аркана: {int(key)} - количество повторений: {value}' for key,
-            value in sorted_clients_dict.items()]
+    data = [
+        f"Значение аркана: {int(key)} - количество повторений: {value}"
+        for key, value in sorted_clients_dict.items()
+    ]
     data.extend(
-        ['', f'Эти значения были сформированы по данным {len(clients_list)} клиентов'])
+        ["", f"Эти значения были сформированы по данным {len(clients_list)} клиентов"]
+    )
 
-    file_name = OUTPUT_PATH/'clients_statistic.txt'
+    file_name = OUTPUT_PATH / "clients_statistic.txt"
     save_to_text_file(file_path=file_name, data=data)
     # Завершение работы программы
 
-    logger.debug(f'Статистика арканов {sorted_clients_dict}')
+    logger.debug(f"Статистика арканов {sorted_clients_dict}")
     logger.info("Программа успешно завершила работу.")
 
 
 # Точка входа в программу
 if __name__ == "__main__":
     from utils.log_utils import configure_logger
+
     configure_logger()
     main()

@@ -7,10 +7,10 @@ def save_to_text_file(file_path, data) -> None:
     """
     try:
         # Открываем файл в режиме записи ('w'). Если файл существует, он будет перезаписан.
-        with open(file_path, 'w', encoding='utf-8') as file:
+        with open(file_path, "w", encoding="utf-8") as file:
             # Записываем каждую строку из списка в файл
             for line in data:
                 # Добавляем перевод строки (\n) после каждой записи
-                file.write(str(line) + '\n')
+                file.write(str(line) + "\n")
     except Exception as e:
-        raise Exception(f"Произошла ошибка при записи файла")
+        raise Exception(f"Произошла ошибка при записи файла {e}")

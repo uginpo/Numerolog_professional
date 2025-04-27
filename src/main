@@ -1,0 +1,30 @@
+#!/Users/user/PythonProjects/Numerolog_professional/.venv/bin/python3.13
+from loguru import logger
+
+
+def main(star: bool = True, triangles: bool = False, one_client: bool = True) -> None:
+    match one_client:
+        case True:
+            from src.full_star import create_fullstar
+            from input_module.clients_info import get_client_info
+            from business_logic.arcanes_classes import Client
+
+            logger.info("Получение данных клиента...")
+            client_info: Client = get_client_info()
+            # client_info = get_client_info(("Julia", "23.07.1982"))
+            create_fullstar(client_info)
+
+        case False:
+            logger.info("Создание пакета отчетов...")
+            from src.package import create_package_fullstar
+
+            create_package_fullstar()
+
+    logger.info("Программа успешно завершила работу.")
+
+
+if __name__ == "__main__":
+    from utils.log_utils import configure_logger
+
+    configure_logger()
+    main()

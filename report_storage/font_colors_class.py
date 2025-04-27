@@ -24,7 +24,7 @@ class FontsColorsConfig:
         """Настройки для заголовка страницы"""
         return {
             "font": self._create_font_settings("roboto_regular", 240),
-            "color": self._create_color_settings("#E3DDD0")
+            "color": self._create_color_settings("#E3DDD0"),
         }
 
     @property
@@ -32,7 +32,7 @@ class FontsColorsConfig:
         """Настройки для 'Личности'"""
         return {
             "font": self._create_font_settings("roboto_bold", 280),
-            "color": self._create_color_settings("#E6DFD2")
+            "color": self._create_color_settings("#E6DFD2"),
         }
 
     @property
@@ -40,7 +40,7 @@ class FontsColorsConfig:
         """Настройки для 'Личности'"""
         return {
             "font": self._create_font_settings("roboto_regular", 220),
-            "color": self._create_color_settings("#F11616")
+            "color": self._create_color_settings("#F11616"),
         }
 
     @property
@@ -48,7 +48,7 @@ class FontsColorsConfig:
         """Настройки для ошибок"""
         return {
             "font": self._create_font_settings("roboto_medium", 220),
-            "color": self._create_color_settings("#4E322B")
+            "color": self._create_color_settings("#4E322B"),
         }
 
     @property
@@ -56,7 +56,7 @@ class FontsColorsConfig:
         """Настройки для 'Личности'"""
         return {
             "font": self._create_font_settings("roboto_regular", 200),
-            "color": self._create_color_settings("#00FFED")
+            "color": self._create_color_settings("#00FFED"),
         }
 
     @property
@@ -64,7 +64,7 @@ class FontsColorsConfig:
         """Настройки для 'Миссии'"""
         return {
             "font": self._create_font_settings("roboto_regular", 300),
-            "color": self._create_color_settings("#FF693A")
+            "color": self._create_color_settings("#FF693A"),
         }
 
     @property
@@ -72,7 +72,7 @@ class FontsColorsConfig:
         """Настройки для вершины треугольника"""
         return {
             "font": self._create_font_settings("roboto_regular", 145),
-            "color": self._create_color_settings("#A9AAAA")
+            "color": self._create_color_settings("#A9AAAA"),
         }
 
     @property
@@ -80,7 +80,7 @@ class FontsColorsConfig:
         """Настройки для текста в футере"""
         return {
             "font": self._create_font_settings("roboto_regular", 320),
-            "color": self._create_color_settings("#E3DDD0")
+            "color": self._create_color_settings("#E3DDD0"),
         }
 
     # Настройки для треугольника
@@ -90,7 +90,7 @@ class FontsColorsConfig:
         """Настройки для вершины треугольника"""
         return {
             "font": self._create_font_settings("roboto_bold", 240),
-            "color": self._create_color_settings("#04070F")
+            "color": self._create_color_settings("#04070F"),
         }
 
     @property
@@ -98,7 +98,7 @@ class FontsColorsConfig:
         """Настройки для остальных вершин треугольника"""
         return {
             "font": self._create_font_settings("roboto_bold", 220),
-            "color": self._create_color_settings("#E6DFD2")
+            "color": self._create_color_settings("#E6DFD2"),
         }
 
     # Настройки для страницы аналитики
@@ -172,7 +172,6 @@ class FontsColorsConfig:
             "foot_money": self.footer_text,
             "foot_relationship": self.footer_text,
             "foot_health": self.footer_text,
-
             "personal_inv_vertex": self.triangles_text,
             "personal_inv_mat_vertex": self.triangles_text,
             "personal_inv_pat_vertex": self.triangles_text,
@@ -199,7 +198,7 @@ class FontsColorsConfig:
             "pat_vertex": self.others_text,
             "inv_vertex": self.others_text,
             "inv_mat_vertex": self.others_text,
-            "inv_pat_vertex": self.others_text
+            "inv_pat_vertex": self.others_text,
         }
         return attributes
 

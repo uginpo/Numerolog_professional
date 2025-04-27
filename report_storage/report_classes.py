@@ -1,25 +1,48 @@
-from fpdf import FPDF
 from dataclasses import dataclass, field
 from typing import List, Dict, Tuple, Union, Literal, Any
-from pathlib import Path
-
-from utils.color_utils import hex_to_rgb
 
 
 # Определение классов для данных
 @dataclass
 class TextElement:
     """Описывает один текстовый элемент"""
+
     position: Tuple[float, float] | None = None  # Координаты (x, y)
     text: str | None = None  # Текст
-    font: Dict[str, Union[Literal["", "B", "I", "U", "BU", "UB", "BI", "IB", "IU", "UI",
-                                  "BIU", "BUI", "IBU", "IUB", "UBI", "UIB"], int]] | None = None  # Параметры шрифта
+    font: (
+        Dict[
+            str,
+            Union[
+                Literal[
+                    "",
+                    "B",
+                    "I",
+                    "U",
+                    "BU",
+                    "UB",
+                    "BI",
+                    "IB",
+                    "IU",
+                    "UI",
+                    "BIU",
+                    "BUI",
+                    "IBU",
+                    "IUB",
+                    "UBI",
+                    "UIB",
+                ],
+                int,
+            ],
+        ]
+        | None
+    ) = None  # Параметры шрифта
     color: Tuple[int, int, int] | None = None  # Цвет текста (RGB)
 
 
 @dataclass
 class ImagePageData:
     """Описывает данные для страницы с изображением"""
+
     image_path: str  # Путь к изображению
     info_positions: List[TextElement]  # Группы текстовых элементов
 
@@ -27,8 +50,9 @@ class ImagePageData:
 @dataclass
 class Section:
     """Описывает раздел текста"""
-    title: str = ''  # Название раздела
-    subtitle: str = ''  # Название подраздела
+
+    title: str = ""  # Название раздела
+    subtitle: str = ""  # Название подраздела
     info: List[str] = field(
         default_factory=list  # Создаем новый пустой список для каждого экземпляра
     )
@@ -41,8 +65,12 @@ class Section:
 @dataclass
 class TextPageData:
     """Описывает данные для страницы с текстом"""
+
     background_color: Tuple[int, int, int] = (
-        255, 255, 255)  # Цвет фона по умолчанию (белый)
+        255,
+        255,
+        255,
+    )  # Цвет фона по умолчанию (белый)
     # Цвет текста по умолчанию (черный)
     text_color: Tuple[int, int, int] = (0, 0, 0)
     sections: List[Section] = field(
